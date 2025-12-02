@@ -1,4 +1,3 @@
 (executable
  (public_name axioms)
- (name main)
- (libraries axioms))
+ (name main))
