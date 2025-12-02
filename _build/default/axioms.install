@@ -1,8 +1,0 @@
-lib: [
-  "_build/install/default/lib/axioms/META"
-  "_build/install/default/lib/axioms/dune-package"
-  "_build/install/default/lib/axioms/opam"
-]
-bin: [
-  "_build/install/default/bin/axioms"
-]
