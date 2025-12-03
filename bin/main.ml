@@ -1,11 +1,36 @@
-module IC = struct
-  type label = int
-  type name = string
-  type term =
-    | Var of name (* variable *)
-    | App of term ref * term ref
-    | Lam of name * term ref (* ʎx. a *)
-    | Sup of label * term ref * term ref (* &l {a, b} *)
-    | Dup of label * name * name * term ref * term ref (* !&l { x1, x2 } = a; b *)
-    | Era
-end
+open LinearLogic
+
+let print_duality name t =
+  Printf.printf "%s:\n" name;
+  Printf.printf "  Type:  %s\n" (string_of_type t);
+  Printf.printf "  Dual:  %s\n" (string_of_type (dual t));
+  Printf.printf "  Dual²: %s\n\n" (string_of_type (dual (dual t)))
+
+let () =
+  print_endline "=== Linear Logic Type System ===\n";
+
+  print_endline "--- Dualities ---";
+  print_duality "Tensor ↔ Par"
+    (Tensor (Var "A", Var "B"));
+
+  print_duality "Plus ↔ With"
+    (Plus (Var "A", Var "B"));
+
+  print_duality "Of Course ↔ Why Not"
+    (OfCourse (Var "A"));
+
+  print_duality "Linear Implication"
+    (Lollipop (Var "A", Var "B"));
+
+  print_endline "--- Examples from Book ---";
+  Printf.printf "read_file: %s\n" (string_of_type Examples.read_file);
+  Printf.printf "serialize: %s\n" (string_of_type Examples.serialize);
+  Printf.printf "parse: %s\n" (string_of_type Examples.parse);
+  Printf.printf "add: %s\n" (string_of_type Examples.add);
+
+  print_endline "\n--- Involution Property ---";
+  let test_type = Tensor (Var "A", Var "B") in
+  Printf.printf "Original: %s\n" (string_of_type test_type);
+  Printf.printf "Dual:     %s\n" (string_of_type (dual test_type));
+  Printf.printf "Dual²:    %s\n" (string_of_type (dual (dual test_type)));
+  Printf.printf "Involution holds: %b\n" (dual (dual test_type) = test_type)
